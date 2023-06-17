@@ -1,0 +1,20 @@
+Write a constraint to randomize a 2-dimensional array to generate below pattern:
+1 2 3 4 5
+2 3 4 5 6
+3 4 5 6 7
+4 5 6 7 8
+5 6 7 8 9
+
+class ArrayConstraint;
+  rand int array[5][5];
+
+  constraint generatePattern {
+    foreach (array[i, j]) {
+      array[i][j] inside {[i + j + 1 : i + j + 5]};
+    }
+  }
+endclass
+
+
+ArrayConstraint constraint = new();
+constraint.randomize();
