@@ -1,0 +1,44 @@
+module top;
+
+	//bit clk;
+	import Bridge_test_pkg::*;
+
+	import uvm_pkg::*;
+
+	`include "uvm_macros.svh"
+
+	bit clock;
+        always
+        #10 clock=!clock;
+
+	 ahb_if ahb(clock);
+	 apb_if apb(clock);
+
+	rtl_top DUT(
+            .Hclk(clock),
+            .Hresetn(ahb.Hresetn),
+            .Htrans(ahb.Htrans),
+            .Hsize(ahb.Hsize),
+            .Hreadyin(ahb.Hreadyin),
+            .Hwdata(ahb.Hwdata),
+            .Haddr(ahb.Haddr),
+            .Hwrite(ahb.Hwrite),
+            .Hrdata(ahb.Hrdata),
+            .Hresp(ahb.Hresp),
+            .Hreadyout(ahb.Hreadyout),
+            .Pselx(apb.Pselx),
+            .Pwrite(apb.Pwrite),
+            .Penable(apb.Penable),
+            .Paddr(apb.Paddr),
+	    .Prdata(apb.Prdata),
+			.Pwdata(apb.Pwdata)
+            ) ;
+initial
+	begin
+		 uvm_config_db #(virtual ahb_if)::set(null,"*","ahb_vif",ahb);
+		 uvm_config_db #(virtual apb_if)::set(null,"*","apb_vif",apb);
+
+		run_test("testcase");
+	end
+
+endmodule
